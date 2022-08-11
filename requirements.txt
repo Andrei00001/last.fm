@@ -1,3 +1,6 @@
 pip==21.3.1
 setuptools==60.2.0
 wheel==0.37.1
+aiogram==2.21
+eventlet
+python-dotenv==0.20.0
