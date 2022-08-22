@@ -7,3 +7,5 @@ python-dotenv==0.20.0
 sqlalchemy==1.4.40
 asyncpg ==0.26.0
 asyncio == 3.4.3
+alembic==1.8.1
+sqlmodel==0.0.6

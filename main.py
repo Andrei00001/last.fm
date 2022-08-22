@@ -13,16 +13,8 @@ def handlers(dp: Dispatcher):
     dp.register_message_handler(echo, commands=["start"])
 
 
-async def async_main():
-
-    # async with engine.begin() as conn:
-    #     await conn.run_sync(Base.metadata.drop_all)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-
 if __name__ == "__main__":
-    Thread(target=lambda: asyncio.run(async_main())).start()
+
     handlers(dp)
     executor.start_polling(dp, skip_updates=True)
 
