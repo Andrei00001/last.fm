@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
+
 from sqlalchemy.ext.asyncio import create_async_engine
 
 load_dotenv()
@@ -34,4 +34,4 @@ class DBRepositories:
             max_overflow=max_overflow,
             encoding=encoding,
             connect_args=connect_args
-        )
+        ), f"{dialect}+{driver}://{username}:{password}@{host}:{port}/{database_name}"
