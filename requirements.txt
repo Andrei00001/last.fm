@@ -10,4 +10,5 @@ asyncio == 3.4.3
 alembic==1.8.1
 sqlmodel==0.0.6
 pydantic==1.9.2
+flake8==5.0.4
 fastapi~=0.79.1
