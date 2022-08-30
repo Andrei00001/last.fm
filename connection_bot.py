@@ -14,4 +14,3 @@ token = os.getenv('TOKEN')
 storage = MemoryStorage()
 bot = Bot(token=token)
 dp = Dispatcher(bot, storage=storage)
-
