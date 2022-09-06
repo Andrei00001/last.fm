@@ -1,39 +1,26 @@
-import uuid
-from datetime import datetime
+
+from pprint import pprint
 
 from aiogram import types
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from connection_db import async_session
-from database.models import User
-from repositories.db_repositories import AuthRepositories
+from app_telegram.keyboards import kb_auth, kb_auth_url, kb_trek
+from repositories.url_requests import AuthRepositories
+from repositories.sql_requests import SQLRepositories
 
 
 async def start_bot(message: types.Message):
-    await add_user(message.chat.id)
-    url = AuthRepositories.auth_url
-
-    inf = InlineKeyboardButton(text="Авторизация", url=url)
-    kb_auth = InlineKeyboardMarkup(resize_keyboard=True)
-    kb_auth.add(inf)
-    await message.answer("Добро пожаловать\n"
-                         "Авторизуйтесь на сайте\n"
-                         "После чего вернитесь в бот", reply_markup=kb_auth)
+    await SQLRepositories.add_user(message.chat.id)
+    await message.answer("Добро пожаловать", reply_markup=kb_auth)
 
 
-async def add_user(id_telegram):
-    user = User(
-        id=str(uuid.uuid4()),
-        name="",
-        id_telegram=id_telegram,
-        data_reg=datetime.now(),
-        token="",
-        session_token="",
-        last_auth=datetime.now()
-    )
+async def auth(message: types.Message):
+    await message.answer("Авторизуйтесь на сайте\n"
+                         "После чего вернитесь в бот", reply_markup=kb_auth_url)
+    await message.answer("Для получения текущей песни нажмите ниже", reply_markup=kb_trek)
 
-    AuthRepositories.auth(uuid=user.id)
-    async with async_session() as session:
-        session.add(user)
-        await session.commit()
-        await session.close()
+
+async def get_trek(message: types.Message):
+    username = await SQLRepositories.get_username(message.chat.id)
+    trek_data = AuthRepositories.request_trek(username)
+    pprint(trek_data)
+    await message.answer(f"Артист: {trek_data['artist']['#text']}\nИмя трека: {trek_data['name']}\n{trek_data['url']}")

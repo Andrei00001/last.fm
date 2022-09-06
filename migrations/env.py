@@ -10,7 +10,7 @@ from database.models import *
 from connection_db import Base
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-from repositories.db_repositories import DBRepositories
+from repositories.sql_requests import DBRepositories
 
 config = context.config
 connect = DBRepositories.base_config()[1]
